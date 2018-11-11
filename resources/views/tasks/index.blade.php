@@ -66,9 +66,18 @@
                                 <td class="table-text">
                                     <div>{{ $task->name }}</div>
                                 </td>
-
+                                <!-- TODO: 削除ボタン -->
                                 <td>
-                                    <!-- TODO: 削除ボタン -->
+                                    <form action="{{ url('tasks/'.$task->id) }}" method="POST">
+                                        {{-- HTMLフォームはGETとPOST HTTP動詞のみを許している為、フォームのDELETEリクエストは下記で指定。 --}}
+                                        {{ csrf_field() }}
+                                        {{ method_field('DELETE') }}
+                                            {{-- フォームのDELETEリクエスト定義。下記を作成する --}}
+                                            {{-- <input type="hidden" name="_method" value="DELETE"> --}}
+                                        <button type="submit" id="delete-task-{{ $task->id }}" class="btn btn-danger">
+                                            <i class="fa fa-btn fa-trash"></i>削除
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

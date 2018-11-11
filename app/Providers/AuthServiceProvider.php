@@ -16,9 +16,12 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
 
-        'App\Task' => 'App\Policies\TaskPolicy',
+        'App\Models\Task' => 'App\Policies\TaskPolicy',
             // TaskモデルをTaskPolicyに関連付ける。
             // Taskインスタンスに対するアクションを認可したい場合に毎回使われるべきポリシーをLaravelに指定することができる。
+
+            // 今回の場合、『'App\Task'』に書き換えてみると、403例外が投げられ、ユーザにエラーページが閲覧できる。
+
     ];
 
     /**

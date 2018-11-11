@@ -8,6 +8,7 @@ namespace App\Http\Controllers;
 // use App\Task;
 use Illuminate\Http\Request;
 use App\Repositories\TaskRepository;
+use App\Models\Task;
 
 class TaskController extends Controller
 {
@@ -97,12 +98,25 @@ class TaskController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * 指定タスクの削除
      *
-     * @param  int  $id
+     * @param  Request  $request
+     * @param  Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    // ルートの『{task}』とメソッド中の『$task』が一致するため、暗黙的モデル結合となる。（implicit）
+    public function destroy(Request $request, Task $task)
     {
-        //
+        // 第一引数は、呼び出したいポリシーメソッド名前。
+        // 第二引数は、現在関心を向けているモデルインスタンス。
+        // 現在のユーザは自動的にポリシーメソッドに送られるので、Taskインスタンスをポリシーメソッドに送る。
+        $this->authorize('destroy', $task);
+            // 正常なのか、Reponseで#messageがnull
+            // アクションが非許可になれば（つまりポリシーのdestroyメソッドがfalseを返したら）、403例外が投げられ、ユーザにエラーページが表示される。
+            // ＝『AuthServiceProvider.php』の$policies内をわざと書き間違えてみると閲覧可能。
+
+        $task->delete();
+
+        return redirect('/tasks');
     }
 }
