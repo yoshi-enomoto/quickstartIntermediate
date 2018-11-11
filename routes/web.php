@@ -11,6 +11,14 @@
 |
 */
 
+// ゲストユーザ用のランディングページ
 Route::get('/', function () {
     return view('welcome');
 });
+
+// 下記２つは『php artisan make:auth』すると自動で生成される。
+    // 認証ルート
+    Auth::routes();
+
+    // ログイン後に表示されるページ
+    Route::get('/home', 'HomeController@index')->name('home');
