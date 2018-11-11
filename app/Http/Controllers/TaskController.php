@@ -22,9 +22,17 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('tasks.index');
+        // $requestからuserを取り出し、そのリレーションを用いてタスクを取り出している。
+        // storeアクションと同様
+        $tasks = $request->user()->tasks()->get();
+
+        // 第２引数に、ビューで使用するデータを配列で渡す。
+        // 配列のキーはビューの中で変数となる。
+        return view('tasks.index', [
+            'tasks' => $tasks,
+        ]);
     }
 
     /**
