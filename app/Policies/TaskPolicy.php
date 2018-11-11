@@ -10,12 +10,16 @@ class TaskPolicy
     use HandlesAuthorization;
 
     /**
-     * Create a new policy instance.
+     * 指定されたユーザーが指定されたタスクを削除できるか決定
      *
-     * @return void
+     * @param  User  $user
+     * @param  Task  $task
+     * @return bool
      */
-    public function __construct()
+    // このメソッドはユーザのIDがタスクのuser_idと一致するかを調べるだけ。
+    // 全ポリシーメソッドはtrueかfalseを返す必要がある。
+    public function destroy(User $user, Task $task)
     {
-        //
+        return $user->id === $task->user_id;
     }
 }
