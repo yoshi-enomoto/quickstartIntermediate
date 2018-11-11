@@ -24,4 +24,4 @@ Route::get('/', function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
     // tasks
-    Route::resource('/tasks', 'TaskController');
+    Route::resource('/tasks', 'TaskController', ['except' => ['create', 'show', 'edit', 'update']]);
