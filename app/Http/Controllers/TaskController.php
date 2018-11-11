@@ -2,36 +2,69 @@
 
 namespace App\Http\Controllers;
 
+// このコントローラー内で使用していない為、コメントアウトにしてみた。
+// use App\Http\Requests;
+// use App\Http\Controllers\Controller;
+// use App\Task;
 use Illuminate\Http\Request;
+use App\Repositories\TaskRepository;
 
 class TaskController extends Controller
 {
     /**
+     * タスクリポジトリーインスタンス
+     *
+     * @var TaskRepository
+     */
+    protected $tasks;
+
+    /**
      * 新しいコントローラインスタンスの生成
      *
+     * @param  TaskRepository  $tasks
      * @return void
      */
-    // 認証されたユーザにのみ、アクセスを許す設定
-    public function __construct()
+    // public function __construct()
+        // 初期の記述
+    // TaskControllerのコンストラクターでキー＆バリューとして指定？
+    //  ＝他で活用する為。
+    // Laravelは全コントローラーの依存解決にコンテナを使っていますので、依存はコントローラーインスタンスへ自動的に注入されます？？？
+    public function __construct(TaskRepository $tasks)
     {
         $this->middleware('auth');
+            // 認証されたユーザにのみ、アクセスを許す設定
+
+        $this->tasks = $tasks;
+            // 『$this』：TaskController
+            // 『$tasks』：TaskRepository
     }
 
     /**
      * Display a listing of the resource.
      *
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        // $requestからuserを取り出し、そのリレーションを用いてタスクを取り出している。
-        // storeアクションと同様
-        $tasks = $request->user()->tasks()->get();
+        // // $requestからuserを取り出し、そのリレーションを用いてタスクを取り出している。
+        // // storeアクションと同様
+        // $tasks = $request->user()->tasks()->get();
 
-        // 第２引数に、ビューで使用するデータを配列で渡す。
-        // 配列のキーはビューの中で変数となる。
+        // // 第２引数に、ビューで使用するデータを配列で渡す。
+        // // 配列のキーはビューの中で変数となる。
+        // return view('tasks.index', [
+        //     'tasks' => $tasks,
+        // ]);
+
+        // 上記すべて、TaskRepository作成前の記述
+        // 下記はTaskRepository作成後の記述
         return view('tasks.index', [
-            'tasks' => $tasks,
+            'tasks' => $this->tasks->forUser($request->user()),
+                // 『$this』：TaskController
+                // 『->tasks』：TaskRepository（コンストラクタで定義）
+                // 『->forUser()』：TaskRepositoryクラスで定義したメソッドが使用可。
+                // ＝task全てを返す。
         ]);
     }
 

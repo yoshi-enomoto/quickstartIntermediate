@@ -14,6 +14,7 @@ class TaskRepository
      */
     public function forUser(User $user)
     {
+        // Collectionを返す（Taskすべて）
         return $user->tasks()
                     ->orderBy('created_at', 'asc')
                     ->get();
