@@ -7,6 +7,17 @@ use Illuminate\Http\Request;
 class TaskController extends Controller
 {
     /**
+     * 新しいコントローラインスタンスの生成
+     *
+     * @return void
+     */
+    // 認証されたユーザにのみ、アクセスを許す設定
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
