@@ -22,3 +22,5 @@ Route::get('/', function () {
 
     // ログイン後に表示されるページ
     Route::get('/home', 'HomeController@index')->name('home');
+
+    Route::resource('/tasks', 'TaskController');
