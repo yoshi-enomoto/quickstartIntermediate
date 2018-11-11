@@ -16,7 +16,7 @@
             <div class="container">
                 <!-- ナビバーの内容 -->
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="{{ url('/')  }}">
+                    <a class="navbar-brand" href="{{ url('/tasks')  }}">
                     Task List
                     </a>
                 </div>
