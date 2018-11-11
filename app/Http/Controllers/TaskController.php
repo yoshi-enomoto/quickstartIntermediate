@@ -45,7 +45,23 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // ValidatesRequestsトレイトが使用可能！
+        //  →ControllerでValidatesRequetsをuseしている為
+        $this->validate($request, [
+            'name' => 'required|max:255',
+        ]);
+
+        // タスクの作成処理…
+        // createメソッドは属性の配列を受け取り、データベースへ保存する前に、関連するモデルの外部キー値を自動的に設定する。
+        // 以下の場合、createメソッドは、$request->user()でアクセスできる現在の認証済みユーザのIDを指定したタスクのuser_idプロパティへ自動的に設定します。
+        $request->user()->tasks()->create([
+            'name' => $request->name,
+        ]);
+
+        // 実URLで与える場合
+        return redirect('/tasks');
+        // nameで与える場合
+        // return redirect()->route('tasks.index');
     }
 
     /**

@@ -20,7 +20,8 @@ Route::get('/', function () {
     // 認証ルート
     Auth::routes();
 
-    // ログイン後に表示されるページ
+    // ログイン後に表示されるページ（設定を変える前）
     Route::get('/home', 'HomeController@index')->name('home');
 
+    // tasks
     Route::resource('/tasks', 'TaskController');
